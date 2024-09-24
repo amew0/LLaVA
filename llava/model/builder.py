@@ -117,6 +117,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 model = LlavaLlamaForCausalLM.from_pretrained(
                     model_path,
                     low_cpu_mem_usage=True,
+                    cache_dir="/dpc/kunf0097/cache/models",
                     **kwargs
                 )
     else:
@@ -154,7 +155,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
 
         vision_tower = model.get_vision_tower()
         if not vision_tower.is_loaded:
-            vision_tower.load_model(device_map=device_map)
+            vision_tower.load_model(device_map=device_map, cache_dir="/dpc/kunf0097/cache/models")
         if device_map != 'auto':
             vision_tower.to(device=device_map, dtype=torch.float16)
         image_processor = vision_tower.image_processor
